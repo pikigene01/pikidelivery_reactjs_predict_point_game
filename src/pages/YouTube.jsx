@@ -1,31 +1,17 @@
 import React, { useEffect,useState } from "react";
 import useLocalStorage from "../services/useLocalStorage";
+import { useSelector,useDispatch } from "react-redux";
+import { buttonClick } from "../redux/cartReducer";
 
 export default function YouTube() {
- const [copiedText,setCopiedText] = useState("")
- useEffect(()=>{
-  navigator.clipboard.readText().then((text)=>{
-    setCopiedText(text);
-  })
- },[])
-
- useEffect(()=>{
-var textWrap = document.getElementById('text')
-
-if(copiedText.length > 2){
-  let i = 0;
-  setInterval(()=>{
-   i++;
-   textWrap.innerText = copiedText.substring(0,i)
-   if(i >= copiedText.length){
-    textWrap.innerHTML = copiedText;
-   }
-  },2)
-}
- },[copiedText])
+ const {count} = useSelector(state=>state.cart)
+ const dispatch = useDispatch();
+  const addCount =(e)=>{
+    dispatch(buttonClick());
+  }
   return (
     <div id="text">
-      <h1 style={{color:"#333"}}>PikiDelivery</h1>
+      <h1 onClick={()=>addCount()} style={{color:"#333"}}>PikiDelivery {count}</h1>
     </div>
   );
 }
